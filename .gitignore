@@ -16,5 +16,5 @@ build/
 Thumbs.db
 
 # Dependencies
-src/ # source moodle
-volume/ # docker volume mount
+volume/
+zzz/
