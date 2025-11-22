@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  php:
+    # build: .
+    image: moodle:4.5.7-fpm-php82
+    volumes:
+      - moodle_www:/var/www/html
+      # - ./config.php:/var/www/html/config.php
+      - moodledata:/var/www/moodledata
+      - ./fpm-conf/z-www-override.conf:/usr/local/etc/php-fpm.d/z-www-override.conf
+      - ./php-conf/99-moodle.ini:/usr/local/etc/php/conf.d/99-moodle.ini
+    environment:
+      MOODLE_DB_HOST: 192.168.2.9
+      MOODLE_DB_USER: root
+      MOODLE_DB_PASSWORD: my-secret-pw
+      MOODLE_DB_NAME: moodledb
+
+  web:
+    image: nginx:stable
+    ports:
+      - "80:80"
+    volumes:
+      - moodle_www:/var/www/html:ro
+      - moodledata:/var/www/moodledata
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  cron:
+    build:
+      context: ./cron
+    volumes:
+      - moodle_www:/var/www/html
+      - moodledata:/var/www/moodledata
+    depends_on:
+      - php
+
+volumes:
+  moodle_www:
+  moodledata:
