@@ -1,0 +1,20 @@
+# Docker-related files
+.dockerignore
+docker-compose.override.yml # If used for local-only overrides
+.env # For environment variables, especially sensitive ones
+
+# Build artifacts
+*.log
+tmp/
+dist/
+build/
+
+# IDE and OS specific files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Dependencies
+src/ # source moodle
+volume/ # docker volume mount
