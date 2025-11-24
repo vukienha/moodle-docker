@@ -11,6 +11,7 @@ services:
       - ./fpm-conf/z-www-override.conf:/usr/local/etc/php-fpm.d/z-www-override.conf
       - ./php-conf/99-moodle.ini:/usr/local/etc/php/conf.d/99-moodle.ini
     environment:
+      MOODLE_URL: http://localhost
       MOODLE_DB_HOST: 192.168.2.9
       MOODLE_DB_USER: root
       MOODLE_DB_PASSWORD: my-secret-pw
@@ -28,11 +29,16 @@ services:
       - php
 
   cron:
-    build:
-      context: ./cron
+    # build:
+      # context: ./cron
+    image: moodle:4.5.7-fpm-php82
     volumes:
+      - ./cron/cron.sh:/usr/local/bin/cron.sh
       - moodle_www:/var/www/html
       - moodledata:/var/www/moodledata
+    # entrypoint: ["php", "admin/cli/cron.php"]
+    entrypoint: ["/bin/bash", "-c"]
+    command: "while true; do /usr/local/bin/cron.sh; sleep 60; done"
     depends_on:
       - php
 

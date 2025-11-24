@@ -11,7 +11,7 @@ set -euo pipefail
 : "${MOODLE_DB_NAME:=moodle}"
 : "${MOODLE_DB_USER:=moodle}"
 : "${MOODLE_DB_PASSWORD:=password}"
-
+: "${MOODLE_URL:=http://localhost}"
 : "${MOODLE_ADMIN_USER:=admin}"
 : "${MOODLE_ADMIN_PASSWORD:=adminpass}"
 : "${MOODLE_ADMIN_EMAIL:=admin@example.com}"
@@ -53,7 +53,7 @@ if [ ! -f "${MOODLE_WWW_DIR}/config.php" ]; then
         --lang="$MOODLE_LANG" \
         --fullname="$MOODLE_SITE_FULLNAME" \
         --shortname="$MOODLE_SITE_NAME" \
-        --wwwroot="http://localhost" \
+        --wwwroot="$MOODLE_URL" \
         --dataroot="$MOODLE_DATA" \
         --dbtype="$MOODLE_DB_TYPE" \
         --dbhost="$MOODLE_DB_HOST" \
